@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Image Restoration</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .upload-box {
+            background: white;
+            width: 600px;
+            max-width: 95%;
+            margin: 0 auto 30px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        input[type="file"] {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 14px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* =========================
+           COMPARISON SECTION
+           ========================= */
+
+        .comparison {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .image-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+            /* SAME CARD SIZE */
+            width: 400px;
+        }
+
+        .image-card h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* =========================
+           SAME IMAGE DISPLAY SIZE
+           ========================= */
+
+        .image-container {
+            width: 350px;
+            height: 350px;
+            margin: auto;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #eee;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .image-container img {
+            width: 350px;
+            height: 350px;
+
+            /* Keeps image proportions */
+            object-fit: contain;
+
+            display: block;
+        }
+
+        .filename {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            word-break: break-all;
+        }
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 850px) {
+
+            .comparison {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .image-card {
+                width: 95%;
+            }
+
+            .image-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .image-container img {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <h1>AI-Based Image Restoration</h1>
+
+    <p class="subtitle">
+        Select a degraded image/file and restore it using the trained AI model.
+    </p>
+
+
+    <!-- =========================
+         UPLOAD
+         ========================= -->
+
+    <div class="upload-box">
+
+        <form action="/" method="POST" enctype="multipart/form-data">
+
+            <input
+                type="file"
+                name="file"
+                accept=".npy,.png,.jpg,.jpeg"
+                required
+            >
+
+            <button type="submit">
+                Restore Image
+            </button>
+
+        </form>
+
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         BEFORE / AFTER
+         ========================= -->
+
+    {% if before and after %}
+
+    <div class="comparison">
+
+        <!-- BEFORE -->
+
+        <div class="image-card">
+
+            <h2>BEFORE</h2>
+
+            <div class="image-container">
+                <img
+                    src="{{ before }}"
+                    alt="Original degraded image"
+                >
+            </div>
+
+            <div class="filename">
+                Original / Degraded Image
+            </div>
+
+        </div>
+
+
+        <!-- AFTER -->
+
+        <div class="image-card">
+
+            <h2>AFTER</h2>
+
+            <div class="image-container">
+                <img
+                    src="{{ after }}"
+                    alt="Restored image"
+                >
+            </div>
+
+            <div class="filename">
+                AI Restored Image
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</body>
+
+</html>
